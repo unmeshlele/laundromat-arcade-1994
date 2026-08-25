@@ -23,7 +23,7 @@ interface PlayerProps {
 }
 
 function formatTime(seconds: number): string {
-  if (isNaN(seconds) || seconds < 0) return '0:00';
+  if (!Number.isFinite(seconds) || isNaN(seconds) || seconds <= 0) return '0:00';
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, '0')}`;
@@ -52,7 +52,8 @@ export const Player: React.FC<PlayerProps> = ({
   const [sleepMinutes, setSleepMinutes] = useState<number | null>(null);
   const [sleepSecondsLeft, setSleepSecondsLeft] = useState<number | null>(null);
 
-  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : 0;
+  const progressPercent = safeDuration > 0 ? Math.min(100, (currentTime / safeDuration) * 100) : 0;
 
   // Sleep Timer countdown & gentle fade out
   useEffect(() => {
@@ -83,17 +84,17 @@ export const Player: React.FC<PlayerProps> = ({
   }, [sleepMinutes]);
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-4 sm:pb-8 pointer-events-none">
+    <div className="fixed inset-x-0 bottom-0 z-40 px-2.5 pb-3 sm:px-4 sm:pb-8 pointer-events-none pb-safe">
       <div className="max-w-xl mx-auto pointer-events-auto flex flex-col items-center gap-2">
         
         {/* Collapsible Atmosphere & Sleep Timer Box */}
         {showAtmosphere && (
-          <div className="w-full bg-[#120c22]/90 backdrop-blur-2xl rounded-2xl p-3.5 border border-white/15 shadow-2xl flex flex-col gap-3 text-xs font-mono animate-in fade-in slide-in-from-bottom-2 duration-200">
-            {/* Foley Volume Sliders */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2">
-                <CloudRain className="size-3.5 text-[#00f0ff]" />
-                <span className="text-white/70 text-[0.7rem]">Rain:</span>
+          <div className="w-full bg-[#120c22]/95 backdrop-blur-2xl rounded-2xl p-3 sm:p-4 border border-white/20 shadow-2xl flex flex-col gap-2.5 sm:gap-3 text-xs font-mono animate-in fade-in slide-in-from-bottom-2 duration-200">
+            {/* Foley Volume Sliders (1 col on mobile, 2 col on tablet+) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+              <div className="flex items-center gap-2 bg-white/5 px-2.5 py-1.5 rounded-xl border border-white/10">
+                <CloudRain className="size-3.5 text-[#00f0ff] shrink-0" />
+                <span className="text-white/80 text-[0.7rem] w-10 shrink-0">Rain:</span>
                 <input
                   type="range"
                   min="0"
@@ -104,9 +105,9 @@ export const Player: React.FC<PlayerProps> = ({
                   className="retro-slider flex-1"
                 />
               </div>
-              <div className="flex items-center gap-2">
-                <Wind className="size-3.5 text-[#ffb800]" />
-                <span className="text-white/70 text-[0.7rem]">Dryer:</span>
+              <div className="flex items-center gap-2 bg-white/5 px-2.5 py-1.5 rounded-xl border border-white/10">
+                <Wind className="size-3.5 text-[#ffb800] shrink-0" />
+                <span className="text-white/80 text-[0.7rem] w-10 shrink-0">Dryer:</span>
                 <input
                   type="range"
                   min="0"
@@ -120,9 +121,9 @@ export const Player: React.FC<PlayerProps> = ({
             </div>
 
             {/* Sleep Timer Preset Selector */}
-            <div className="flex items-center justify-between border-t border-white/10 pt-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-1.5 border-t border-white/10 pt-2">
               <div className="flex items-center gap-1.5 text-white/70 text-[0.7rem]">
-                <Moon className="size-3.5 text-indigo-300" />
+                <Moon className="size-3.5 text-indigo-300 shrink-0" />
                 <span>Sleep Timer:</span>
                 {sleepSecondsLeft && (
                   <span className="text-[#00f0ff] font-bold font-mono">

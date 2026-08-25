@@ -201,7 +201,7 @@ export function App() {
         <h1 className="font-extrabold tracking-tight text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-9xl drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)] font-['Noto_Sans_TC']">
           <span className="block neon-text-pink">深夜洗衣店</span>
         </h1>
-        <p className="mt-3 sm:mt-4 font-mono text-[0.6rem] sm:text-xs tracking-[0.2em] sm:tracking-[0.45em] uppercase text-white/75 drop-shadow-md">
+        <p className="mt-2 sm:mt-4 font-mono text-[0.52rem] xs:text-[0.62rem] sm:text-xs tracking-[0.1em] sm:tracking-[0.4em] uppercase text-white/75 drop-shadow-md whitespace-nowrap">
           Deluxe Laundromat & Arcade · 1994 · open all hours
         </p>
 
