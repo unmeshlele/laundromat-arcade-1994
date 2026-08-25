@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import laundromatNight from '../assets/laundromat-vibe.jpg';
 import { audioSynth } from '../utils/audioSynth';
+import { useDeviceParallax } from '../hooks/useDeviceParallax';
 
 interface SceneProps {
   isPlaying: boolean;
@@ -10,6 +11,9 @@ interface SceneProps {
 export const Scene: React.FC<SceneProps> = ({
   onOpenBoard,
 }) => {
+  // Gyroscope & Motion Parallax Offset
+  const { x, y } = useDeviceParallax();
+
   // Individual flicker state
   const [flickerAll, setFlickerAll] = useState(false);
 
@@ -54,23 +58,35 @@ export const Scene: React.FC<SceneProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden select-none">
-      {/* 1. The Canonical Single 1994 Midnight Laundromat & Arcade Illustration */}
-      <img
-        src={laundromatNight}
-        alt="24/7 Laundromat & Arcade 1994"
-        className={`absolute inset-0 size-full object-cover object-center ${
-          flickerAll ? 'brightness-125 saturate-150' : ''
-        }`}
-      />
-
+    <div className="fixed inset-0 z-0 overflow-hidden select-none bg-black">
       {/* 
         ========================================================================
-        4. PRECISELY MAPPED ZERO-BOUNDING-BOX INTERACTIVE HOTSPOTS
+        1. 3D GYROSCOPE & MOTION PARALLAX LAYER (Mobile & Desktop)
         ========================================================================
-        Completely invisible, no tooltips, no borders, pure immersive exploration!
+        Scaled to 108% with negative insets so tilting never exposes black edges
       */}
-      <div className="absolute inset-0 z-20 pointer-events-none">
+      <div
+        className="absolute inset-[-4%] size-[108%] pointer-events-none transition-transform duration-300 ease-out will-change-transform"
+        style={{
+          transform: `translate3d(${x}px, ${y}px, 0)`,
+        }}
+      >
+        {/* The Canonical Single 1994 Midnight Laundromat & Arcade Illustration */}
+        <img
+          src={laundromatNight}
+          alt="24/7 Laundromat & Arcade 1994"
+          className={`absolute inset-0 size-full object-cover object-center ${
+            flickerAll ? 'brightness-125 saturate-150' : ''
+          }`}
+        />
+
+        {/* 
+          ========================================================================
+          2. PRECISELY MAPPED ZERO-BOUNDING-BOX INTERACTIVE HOTSPOTS
+          ========================================================================
+          Completely invisible, no tooltips, no borders, pure immersive exploration!
+        */}
+        <div className="absolute inset-0 z-20 pointer-events-none">
         
         {/* Hotspot 1: Pac-Man Arcade Cabinet (Left Edge) */}
         <button
@@ -128,6 +144,7 @@ export const Scene: React.FC<SceneProps> = ({
           aria-label="Washing Machine Drum"
         />
 
+        </div>
       </div>
 
       {/* 5. Delicate Cinematic Vignette */}
