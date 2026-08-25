@@ -198,10 +198,10 @@ export function App() {
       <main className="relative z-10 flex flex-col items-center justify-center px-4 text-center my-auto pointer-events-none">
         
         {/* Giant Iconic Native Typography */}
-        <h1 className="font-extrabold tracking-tight text-6xl sm:text-8xl lg:text-9xl drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)] font-['Noto_Sans_TC']">
+        <h1 className="font-extrabold tracking-tight text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-9xl drop-shadow-[0_8px_30px_rgba(0,0,0,0.9)] font-['Noto_Sans_TC']">
           <span className="block neon-text-pink">深夜洗衣店</span>
         </h1>
-        <p className="mt-4 font-mono text-[0.65rem] sm:text-xs tracking-[0.45em] uppercase text-white/75 drop-shadow-md">
+        <p className="mt-3 sm:mt-4 font-mono text-[0.6rem] sm:text-xs tracking-[0.2em] sm:tracking-[0.45em] uppercase text-white/75 drop-shadow-md">
           Deluxe Laundromat & Arcade · 1994 · open all hours
         </p>
 
